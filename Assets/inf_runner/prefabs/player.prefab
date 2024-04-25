@@ -581,16 +581,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d204076699754d24c8b337050c5538a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _movePositionForwardMode: 0
+  _addForceTurnMode: 1
   _rigidbody: {fileID: 0}
   _model: {fileID: 7285899474309390694}
   _skiLeft: {fileID: 1885735196202308477}
   _skiRight: {fileID: 653661510573439194}
   _input: {x: 0, y: 0}
-  turnForce: {x: 0, y: 0, z: 0}
+  _turnForce: {x: 0, y: 0, z: 0}
+  _forwardMovement: {x: 0, y: 0, z: 0}
   _rotationAmount: 3.5
   _skiRotationAmount: 0.5
   _turnSpeed: 20
   _turnSpeedAirDivider: 1
+  _forwardSpeed: 0
   _playerHeight: 0
   _playerHeightOffset: 0.15
   _jumpForce: 0

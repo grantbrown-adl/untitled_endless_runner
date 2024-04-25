@@ -32,6 +32,7 @@ public class Controller : MonoBehaviour {
     [SerializeField] float _jumpForceMultiplier;
     [SerializeField] bool _isGrounded;
     [SerializeField] LayerMask _groundLayerMask;
+    [SerializeField] RaycastHit hitInfo;
 
     private void Awake() {
         _rigidbody = GetComponent<Rigidbody>();
@@ -41,7 +42,10 @@ public class Controller : MonoBehaviour {
     private void Update() {
         _model.transform.rotation = Quaternion.Euler(0, _rigidbody.velocity.x * _rotationAmount, 0);
         // _skiLeft.transform.rotation = _skiRight.transform.rotation = Quaternion.Euler(0, _model.transform.rotation.x, _rigidbody.velocity.x * _skiRotationAmount);
-        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight / 2 + _playerHeightOffset, _groundLayerMask);
+        bool isGrounded = Physics.Raycast(transform.position, Vector3.down, out hitInfo, _playerHeight / 2 + _playerHeightOffset, _groundLayerMask);
+        Debug.DrawRay(transform.position, Vector3.down * (_playerHeight / 2 + _playerHeightOffset), Color.green);
+
+        Debug.Log(hitInfo.collider.gameObject.name);
     }
 
     private void FixedUpdate() {
