@@ -14,7 +14,7 @@ public class ObjectPool : MonoBehaviour {
     public GameObject[] SpawnableObjects { get => _spawnableObjects; set => _spawnableObjects = value; }
     public List<GameObject> Pool { get => _objectPool; set => _objectPool = value; }
 
-    private void Start() {
+    private void Awake() {
         if (_initialItemMultiplier <= 0) _initialItemMultiplier = 1;
         _poolSize = _spawnableObjects.Length * _initialItemMultiplier;
         RefreshPool();
@@ -62,11 +62,11 @@ public class ObjectPool : MonoBehaviour {
         InitialiseObjectPool();
     }
 
-    public static void ReturnInstance(GameObject instance) {
+    public void ReturnInstance(GameObject instance) {
         instance.SetActive(false);
     }
 
-    public static IEnumerator DelayedReturnInstance(GameObject instance, float delay) {
+    public IEnumerator DelayedReturnInstance(GameObject instance, float delay) {
         yield return new WaitForSeconds(delay);
         ReturnInstance(instance);
     }

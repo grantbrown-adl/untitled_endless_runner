@@ -45,7 +45,7 @@ public class Controller : MonoBehaviour {
         bool isGrounded = Physics.Raycast(transform.position, Vector3.down, out hitInfo, _playerHeight / 2 + _playerHeightOffset, _groundLayerMask);
         Debug.DrawRay(transform.position, Vector3.down * (_playerHeight / 2 + _playerHeightOffset), Color.green);
 
-        Debug.Log(hitInfo.collider.gameObject.name);
+        // Debug.Log(hitInfo.collider.gameObject.name);
     }
 
     private void FixedUpdate() {

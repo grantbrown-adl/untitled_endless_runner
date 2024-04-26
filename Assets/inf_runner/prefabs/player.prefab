@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 3973051774739744438}
   m_Layer: 7
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -596,7 +596,7 @@ MonoBehaviour:
   _turnSpeedAirDivider: 1
   _forwardSpeed: 0
   _playerHeight: 0
-  _playerHeightOffset: 0.15
+  _playerHeightOffset: -0.01
   _jumpForce: 0
   _jumpForceMultiplier: 0
   _isGrounded: 0
