@@ -48,6 +48,21 @@ public class ObjectPool : MonoBehaviour {
         return GetInstance();
     }
 
+    public GameObject GetRandomInstance() {
+        int randomIndex = Random.Range(0, _objectPool.Count - 1);
+
+        for (int i = 0; i < _objectPool.Count; i++) {
+            if (!_objectPool[randomIndex].activeInHierarchy) {
+                return _objectPool[randomIndex];
+            }
+
+            randomIndex = (randomIndex + 1) % _objectPool.Count;
+        }
+
+        ExpandPool();
+        return GetRandomInstance();
+    }
+
     public void RefreshPool() {
         if (_container != null) {
             Destroy(_container);

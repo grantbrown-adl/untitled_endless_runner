@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TileSpawner : MonoBehaviour {
@@ -7,11 +6,11 @@ public class TileSpawner : MonoBehaviour {
     [SerializeField] int _maxTileCount;
     [SerializeField] int _maxDistanceFromOrigin = 10000;
     [SerializeField] int _mapSectionLength = 25;
+    [SerializeField] bool _randomTile;
 
     [Header("Visualised Internals")]
     [SerializeField] private int _spawnedTileCount;
     [SerializeField] ObjectPool _tilePool;
-    [SerializeField] private List<GameObject> _activeTiles;
     [SerializeField] Vector3 _nextTileLocation;
     [SerializeField] Transform _playerTransform;
     [SerializeField] Vector3 _playerTransformPosition;
@@ -59,7 +58,7 @@ public class TileSpawner : MonoBehaviour {
 
     private void SpawnTile() {
         _spawnedTileCount++;
-        GameObject instance = _tilePool.GetInstance();
+        GameObject instance = _randomTile ? _tilePool.GetRandomInstance() : _tilePool.GetInstance();
         instance.transform.position = _nextTileLocation;
         _nextTileLocation = instance.transform.position + new Vector3(0, 0, _mapSectionLength);
         instance.SetActive(true);
@@ -72,18 +71,82 @@ public class TileSpawner : MonoBehaviour {
     }
 
     private void HandleTiles() {
-        if (_playerTransform.position.z > _maxDistanceFromOrigin) {
+        if (_playerTransform.position.z > _maxDistanceFromOrigin + (_mapSectionLength / 2)) {
             _playerExceededPlayArea = true;
         }
 
-        foreach (GameObject tile in _tilePool.Pool) {
+        for (int i = 0; i < _tilePool.Pool.Count; i++) {
+            GameObject tile = _tilePool.Pool[i];
             bool despawnTile = tile.transform.position.z - _playerTransform.position.z < -_mapSectionLength;
 
             if (tile.activeInHierarchy && despawnTile) {
                 SpawnTile();
                 DespawnTile(tile);
+                i--;
             }
         }
+    }
+
+    private void ResetGameWorld() {
+        _playerExceededPlayArea = false;
+
+        int activeTiles = 0;
+
+        for (int i = 0; i < _tilePool.Pool.Count; i++) {
+            GameObject tile = _tilePool.Pool[i];
+
+            Debug.Log($"1| i: {i} | activeTiles: {activeTiles} | _nextTileLocation: {_nextTileLocation}");
+
+            if (tile.activeInHierarchy) {
+                tile.transform.position -= new Vector3(0, 0, _maxDistanceFromOrigin);
+                activeTiles++;
+                Debug.Log($"2| i: {i} | activeTiles: {activeTiles} | tile.transform.position: {tile.transform.position}");
+            }
+        }
+
+        _nextTileLocation = new Vector3(0, 0, (activeTiles - 1) * _mapSectionLength);
+        Debug.Log($"3| activeTiles: {activeTiles} | _nextTileLocation: {_nextTileLocation}");
+        _playerTransform.position = Vector3.zero;
+    }
+
+    private void ResetGameWorld1() {
+        _playerExceededPlayArea = false;
+        _playerTransform.position = Vector3.zero;
+
+        int activeTiles = 0;
+        float furthestTileZ = float.MinValue;
+
+        // Find the furthest tile from the origin
+        for (int i = 0; i < _tilePool.Pool.Count; i++) {
+            GameObject tile = _tilePool.Pool[i];
+
+            if (tile.activeInHierarchy) {
+                float tileZ = tile.transform.position.z;
+                if (tileZ > furthestTileZ)
+                    furthestTileZ = tileZ;
+            }
+        }
+
+        // Calculate the offset to bring all tiles back to the positive Z axis
+        float offset = _maxDistanceFromOrigin - furthestTileZ;
+
+        // Reposition active tiles and count them
+        for (int i = 0; i < _tilePool.Pool.Count; i++) {
+            GameObject tile = _tilePool.Pool[i];
+
+            if (tile.activeInHierarchy) {
+                tile.transform.position += new Vector3(0, 0, offset);
+                activeTiles++;
+            }
+        }
+
+        // If no active tiles are found, spawn a new tile at the origin
+        if (activeTiles == 0) {
+            SpawnTile();
+        }
+
+        // Update the next tile location
+        _nextTileLocation = new Vector3(0, 0, activeTiles * _mapSectionLength);
     }
 
     private void StartGameTicks() {
