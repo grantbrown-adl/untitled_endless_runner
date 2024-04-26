@@ -42,10 +42,8 @@ public class Controller : MonoBehaviour {
     private void Update() {
         _model.transform.rotation = Quaternion.Euler(0, _rigidbody.velocity.x * _rotationAmount, 0);
         // _skiLeft.transform.rotation = _skiRight.transform.rotation = Quaternion.Euler(0, _model.transform.rotation.x, _rigidbody.velocity.x * _skiRotationAmount);
-        bool isGrounded = Physics.Raycast(transform.position, Vector3.down, out hitInfo, _playerHeight / 2 + _playerHeightOffset, _groundLayerMask);
-        Debug.DrawRay(transform.position, Vector3.down * (_playerHeight / 2 + _playerHeightOffset), Color.green);
-
-        // Debug.Log(hitInfo.collider.gameObject.name);
+        _isGrounded = Physics.Raycast(transform.position + new Vector3(0, _playerHeight / 2), Vector3.down, _playerHeight / 2 + _playerHeightOffset, _groundLayerMask);
+        Debug.DrawRay(transform.position + new Vector3(0, _playerHeight / 2), Vector3.down - new Vector3(0, _playerHeightOffset), Color.green);
     }
 
     private void FixedUpdate() {

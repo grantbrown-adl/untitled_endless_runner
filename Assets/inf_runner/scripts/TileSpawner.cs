@@ -95,17 +95,13 @@ public class TileSpawner : MonoBehaviour {
         for (int i = 0; i < _tilePool.Pool.Count; i++) {
             GameObject tile = _tilePool.Pool[i];
 
-            Debug.Log($"1| i: {i} | activeTiles: {activeTiles} | _nextTileLocation: {_nextTileLocation}");
-
             if (tile.activeInHierarchy) {
                 tile.transform.position -= new Vector3(0, 0, _maxDistanceFromOrigin);
                 activeTiles++;
-                Debug.Log($"2| i: {i} | activeTiles: {activeTiles} | tile.transform.position: {tile.transform.position}");
             }
         }
 
         _nextTileLocation = new Vector3(0, 0, (activeTiles - 1) * _mapSectionLength);
-        Debug.Log($"3| activeTiles: {activeTiles} | _nextTileLocation: {_nextTileLocation}");
         _playerTransform.position = Vector3.zero;
     }
 
