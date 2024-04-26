@@ -474,6 +474,14 @@ PrefabInstance:
       propertyPath: _forwardSpeed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 81021355507908481, guid: e28af44aa582afa4bb1d68c644ecb056, type: 3}
+      propertyPath: _playerHeightOffset
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 81021355507908481, guid: e28af44aa582afa4bb1d68c644ecb056, type: 3}
+      propertyPath: _movePositionForwardMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5763552123585712361, guid: e28af44aa582afa4bb1d68c644ecb056, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
