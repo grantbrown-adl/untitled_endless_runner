@@ -15,7 +15,7 @@ TagManager:
   - player
   - obstacle
   - collectable
-  - 
+  - camera_collision
   - 
   - 
   - 
